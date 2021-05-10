@@ -1,0 +1,32 @@
+.tile {
+  width: var(--size-tile);
+  height: var(--size-tile);
+  background-color: var(--color-white);
+  margin: 0.5rem;
+  border-radius: 50%;
+  box-shadow: 2px 2px 5px var(--color-dark-gray);
+}
+
+.tile:hover {
+  background-color: var(--color-light-gray);
+}
+
+.tile--red, .tile--red:hover {
+  background-color: var(--color-light-red);
+  border: 3px solid var(--color-red);
+}
+
+.tile--yellow, .tile--yellow:hover {
+  background-color: var(--color-light-yellow);
+  border: 3px solid var(--color-yellow);
+}
+
+.tile--winner {
+  border-color: var(--color-black);
+}
+
+.tile--winner::after {
+  content: 'Winner';
+  font-weight: bold;
+  display: inline-block;
+}

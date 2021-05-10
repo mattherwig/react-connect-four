@@ -1,0 +1,12 @@
+.app .app__header {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.app .app__footer {
+  margin-top: 3rem;
+}
+
+.app .app__about {
+  float: right;
+}

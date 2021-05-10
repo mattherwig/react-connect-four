@@ -1,0 +1,19 @@
+.board-header {
+  position: relative;
+}
+
+.board-header .board-header__title {
+  padding: 0;
+  margin: 0;
+}
+
+.board-header .board-header__highlight {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.board-header .board-header__reset {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
