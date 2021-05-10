@@ -1,7 +1,8 @@
 {
   "name": "react-connect-four",
   "version": "0.1.0",
-  "private": true,
+  "homepage": "http://mattherwig.github.io/react-connect-four",
+  "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -16,6 +17,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -40,6 +43,7 @@
   },
   "devDependencies": {
     "eslint-import-resolver-babel-module": "^5.3.1",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "gh-pages": "^3.1.0"
   }
 }
