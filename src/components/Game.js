@@ -1,80 +1,67 @@
+import _ from "lodash";
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { MAX_TURNS, PLAYER_RED_TILE, PLAYER_YELLOW_TILE } from "../utils/ApplicationConstants";
+import checkWinner from "../utils/WinnerCalculator";
 import Board from "./Board/Board";
 import BoardSidebar from "./BoardSidebar/BoardSidebar";
 
 import "./Game.css";
 
-export const ROW_SIZE = 6;
-export const COLUMN_SIZE = 7;
-export const MAX_STEPS = ROW_SIZE * COLUMN_SIZE;
-export const PLAYER_RED_TILE = 'red';
-export const PLAYER_YELLOW_TILE = 'yellow';
-
 export default function Game() {
   const [tileMatrix, setTileMatrix] = useState(getInitialTileMatrix());
-  const [step, setStep] = useState(0);
+  const [turn, setTurn] = useState(0);
   const [tileMatrixHistory, setTileMatrixHistory] = useState([]);
 
-  const winnerTiles = checkWinner(tileMatrix);
-  const winner = winnerTiles ? tileMatrix[winnerTiles[0][0]][winnerTiles[0][1]] : null;
-  const currentPlayer = step % 2 === 0 ? PLAYER_RED_TILE : PLAYER_YELLOW_TILE;
-  const onTileClick = (c) => {
-    setTileMatrix(prevTileMatrix => {
-      if (winnerTiles || step >= MAX_STEPS) return prevTileMatrix;
+  const { winner, winnerTiles } = checkWinner(tileMatrix);
+  const currentPlayer = turn % 2 === 0 ? PLAYER_RED_TILE : PLAYER_YELLOW_TILE;
 
-      const cloneTileMatrix = JSON.parse(JSON.stringify(prevTileMatrix));
-      
-      let r = -1;
-      for (let i = ROW_SIZE - 1; i >= 0; i--) {
-        if (cloneTileMatrix[i][c]) continue;
-        r = i;
-        break;
-      }
-      if (r === -1) return prevTileMatrix;
+  const onTileClick = (column) => {
+    if (winner || turn >= MAX_TURNS) return;
+    const cloneTileMatrix = _.cloneDeep(tileMatrix);
+    
+    const highestRow = _.findLastIndex(cloneTileMatrix, tileRow => !tileRow[column]);
+    if (highestRow === -1) return;
 
-      cloneTileMatrix[r][c] = currentPlayer;
-      setStep(step + 1);
-      return cloneTileMatrix;
-    });
+    cloneTileMatrix[highestRow][column] = currentPlayer;
+    setTurn(turn + 1);
+    setTileMatrix(cloneTileMatrix);
   };
 
   const onReset = () => {
-    setTileMatrixHistory(prevTileMatrixHistory => {
-      const historyItem = {
-        tileMatrix: JSON.parse(JSON.stringify(tileMatrix)),
-        step: step,
-        winner: winner
-      };
-      setTileMatrix(getInitialTileMatrix());
-      setStep(0);
-      return prevTileMatrixHistory.concat([historyItem]);
-    });
+    const historyItem = {
+      tileMatrix: _.cloneDeep(tileMatrix),
+      turn: turn,
+      winner: winner
+    };
+    setTurn(0);
+    setTileMatrix(getInitialTileMatrix());
+    setTileMatrixHistory(_.cloneDeep(tileMatrixHistory).concat([historyItem]))
   }
 
   const onSetGame = (index) => {
-    const { tileMatrix: oldTileMatrix, step: oldStep } = tileMatrixHistory[index];
-    setTileMatrix(JSON.parse(JSON.stringify(oldTileMatrix)));
-    setStep(oldStep);
+    const { tileMatrix, turn } = tileMatrixHistory[index];
+    setTurn(turn);
+    setTileMatrix(_.cloneDeep(tileMatrix));
   }
 
   return (
     <Container>
-      <Row noGutters>
+      <Row>
         <Col>
           <Board 
             tileMatrix={tileMatrix} 
             winnerTiles={winnerTiles}
             winner={winner}
-            step={step}
+            turn={turn}
             currentPlayer={currentPlayer}
             onPlayAgain={onReset}
             onTileClick={onTileClick}
           />
         </Col>
-        <Col>
+        <Col xs={12} lg>
           <BoardSidebar 
-            step={step}
+            turn={turn}
             winner={winner}
             tileMatrixHistory={tileMatrixHistory}
             onReset={onReset}
@@ -86,57 +73,9 @@ export default function Game() {
   );
 }
 
-function checkWinner(tileMatrix) {
-  for (let r = 0; r < ROW_SIZE - 3; r++) {
-    for (let c = 0; c < COLUMN_SIZE; c++) {
-      const head = tileMatrix[r][c];
-      let count = 1;
-      for (let rd = 1; rd < 4; rd++) {
-        const curr = tileMatrix[r + rd][c];
-        if (head && head === curr) count++;
-      }
-      if (count === 4) return [[r, c], [r + 1, c], [r + 2, c], [r + 3, c]];
-    }
-  }
-
-  for (let c = 0; c < COLUMN_SIZE - 3; c++) {
-    for (let r = 0; r < ROW_SIZE; r++) {
-      const head = tileMatrix[r][c];
-      let count = 1;
-      for (let cd = 1; cd < 4; cd++) {
-        const curr = tileMatrix[r][c + cd];
-        if (head && head === curr) count++;
-      }
-      if (count === 4) return [[r, c], [r, c + 1], [r, c + 2], [r, c + 3]];
-    }
-  }
-
-  for (let r = 0; r < ROW_SIZE - 3; r++) {
-    for (let c = 0; c < COLUMN_SIZE - 3; c++) {
-      const head = tileMatrix[r][c];
-      let count = 1;
-      for (let d = 1; d < 4; d++) {
-        const curr = tileMatrix[r + d][c + d];
-        if (head && head === curr) count++;
-      }
-      if (count === 4) return [[r, c], [r + 1, c + 1], [r + 2, c + 2], [r + 3, c + 3]];
-    }
-  }
-
-  for (let r = 0; r < ROW_SIZE - 3; r++) {
-    for (let c = 3; c < COLUMN_SIZE; c++) {
-      const head = tileMatrix[r][c];
-      let count = 1;
-      for (let d = 1; d < 4; d++) {
-        const curr = tileMatrix[r + d][c - d];
-        if (head && head === curr) count++;
-      }
-      if (count === 4) return [[r, c], [r + 1, c - 1], [r + 2, c - 2], [r + 3, c - 3]];
-    }
-  }
-  return null;
-}
 
 function getInitialTileMatrix() {
-  return Array(ROW_SIZE).fill(Array(COLUMN_SIZE).fill(null));
+  // Array(ROW_SIZE).fill(Array(COLUMN_SIZE).fill(null)) -- doesn't work
+  const column = [null, null, null, null, null, null, null];
+  return [[...column],[...column],[...column],[...column],[...column],[...column]];
 }

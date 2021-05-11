@@ -10,3 +10,12 @@
 .app .app__about {
   float: right;
 }
+
+@media (max-width: 1220px) {
+  .app .app__about {
+    display: none;
+  }
+  .app .app__footer {
+    padding: 2rem;
+  }
+}

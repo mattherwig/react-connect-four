@@ -3,12 +3,12 @@ import BoardHistory from './BoardHistory';
 
 import './BoardSidebar.css';
 
-export default function BoardSidebar({ step, winner, tileMatrixHistory, onReset, onSetGame }) {
+export default function BoardSidebar({ turn, winner, tileMatrixHistory, onReset, onSetGame }) {
   return (
     <div className="board-sidebar">
       <div className="board-sidebar__progress">
         <BoardHeader 
-          step={step} 
+          turn={turn} 
           winner={winner}
           onReset={onReset}
         />

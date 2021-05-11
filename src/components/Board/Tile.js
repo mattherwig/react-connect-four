@@ -1,5 +1,5 @@
 import { Transition } from 'react-transition-group';
-import { PLAYER_RED_TILE } from '../Game';
+import { PLAYER_RED_TILE } from '../../utils/ApplicationConstants';
 
 import './Tile.css';
 
@@ -10,14 +10,14 @@ export default function Tile({ value, row, isWinner, isGameOver, onClick }) {
   const duration = 500;
   const defaultStyle = {
     transition: `opacity ${duration}ms ease-in-out`,
-    opacity: 0.5,
+    opacity: 0.5
   }
   
   const transitionStyles = {
     entering: { opacity: 1 },
-    entered:  { opacity: 1 },
-    exiting:  { opacity: 0.5 },
-    exited:  { opacity: 0.5 },
+    entered: { opacity: 1 },
+    exiting: { opacity: 0.5 },
+    exited: { opacity: 0.5 },
   };
 
   return (

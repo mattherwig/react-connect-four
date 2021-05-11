@@ -1,14 +1,14 @@
 import { Button, ProgressBar } from "react-bootstrap";
-import { MAX_STEPS, PLAYER_YELLOW_TILE, PLAYER_RED_TILE } from "../Game";
+import { MAX_TURNS, PLAYER_RED_TILE, PLAYER_YELLOW_TILE } from "../../utils/ApplicationConstants";
 
 import './BoardHeader.css';
 
-export default function BoardHeader({ step, winner, onReset }) {
+export default function BoardHeader({ turn, winner, onReset }) {
   return (
     <div className="board-header">
       <HeaderInfo
         title={winner ? 'Winner:' : 'Turn:'}
-        highlight={step % 2 === 0 ? PLAYER_RED_TILE : PLAYER_YELLOW_TILE }
+        highlight={turn % 2 === 0 ? PLAYER_RED_TILE : PLAYER_YELLOW_TILE }
       />
       <HeaderActionGroup
         onReset={onReset}
@@ -17,8 +17,8 @@ export default function BoardHeader({ step, winner, onReset }) {
           animated
           variant={winner ? "danger" : "warning"}
           min={0}
-          max={MAX_STEPS}
-          now={winner ? MAX_STEPS : step}
+          max={MAX_TURNS}
+          now={winner ? MAX_TURNS : turn}
         />
     </div>
   );

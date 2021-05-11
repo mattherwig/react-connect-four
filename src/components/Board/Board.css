@@ -4,6 +4,7 @@
   padding: 1rem;
   border-radius: 1rem;
   position: relative;
+  display: inline-block;
   box-shadow: 2px 2px 10px var(--color-dark-gray);
 }
 

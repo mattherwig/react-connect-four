@@ -1,6 +1,6 @@
 {
   "name": "react-connect-four",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "http://mattherwig.github.io/react-connect-four",
   "private": false,
   "dependencies": {
@@ -8,6 +8,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^5.0.0",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",

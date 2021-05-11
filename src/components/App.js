@@ -1,4 +1,5 @@
 import { Badge, Col, Container, Image, Row } from "react-bootstrap";
+import { BASE_HOST_URL } from "../utils/ApplicationConstants";
 import Game from "./Game";
 
 import "./App.css";
@@ -8,7 +9,7 @@ export default function App() {
     <Container className="app">
       <Row>
         <Col className="app__header">
-          <Image src="./images/connect-four-logo.png" />
+          <Image src={`${BASE_HOST_URL}/images/connect-four-logo.png`} />
           <div className="app__about">
             <Badge variant="dark">React</Badge>
             <Badge variant="dark">React-Bootstrap</Badge>

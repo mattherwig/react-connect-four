@@ -1,10 +1,11 @@
 import Tile from "./Tile";
-import { MAX_STEPS } from "../Game";
+import { Button } from "react-bootstrap";
+import { MAX_TURNS } from "../../utils/ApplicationConstants";
 
 import "./Board.css";
-import { Button } from "react-bootstrap";
 
-export default function Board({ tileMatrix, winnerTiles, winner, step, onPlayAgain, onTileClick }) {
+
+export default function Board({ tileMatrix, winnerTiles, winner, turn, onPlayAgain, onTileClick }) {
   const tileElements = tileMatrix.map((tileRow, row) => {
     const tileRowElements = tileRow.map((tile, column) => {
       const winner = winnerTiles?.find(([r, c]) => r === row && c === column);
@@ -26,7 +27,7 @@ export default function Board({ tileMatrix, winnerTiles, winner, step, onPlayAga
   return (
     <div className="board">
       {winnerTiles && <GameOverModal title="Game Over" subtitle={`${winner} won the game!`} onPlayAgain={onPlayAgain} />}
-      {!winnerTiles && step >= MAX_STEPS && <GameOverModal title="Game Tie" onPlayAgain={onPlayAgain} />}
+      {!winnerTiles && turn >= MAX_TURNS && <GameOverModal title="Game Tie" onPlayAgain={onPlayAgain} />}
       <table>
         <tbody>{tileElements}</tbody>
       </table>
