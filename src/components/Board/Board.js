@@ -4,18 +4,19 @@ import { MAX_TURNS } from "../../utils/ApplicationConstants";
 
 import "./Board.css";
 
+export default function Board({ current, onPlayAgain, onTileClick }) {
+  const isGameOver = !!current?.winner?.tiles,
+        isGameTie = !isGameOver && current.turn >= MAX_TURNS;
 
-export default function Board({ tileMatrix, winnerTiles, winner, turn, onPlayAgain, onTileClick }) {
-  const tileElements = tileMatrix.map((tileRow, row) => {
+  const tileElements = current.tileMatrix.map((tileRow, row) => {
     const tileRowElements = tileRow.map((tile, column) => {
-      const winner = winnerTiles?.find(([r, c]) => r === row && c === column);
+      const winner = current.winner.tiles?.find(([r, c]) => r === row && c === column);
       return (
         <td key={column}>
           <Tile 
-            value={tile} 
-            row={row}
+            value={tile}
             isWinner={!!winner}
-            isGameOver={!!winnerTiles}
+            isGameOver={isGameOver}
             onClick={() => onTileClick(column)}
           />
         </td>
@@ -26,8 +27,8 @@ export default function Board({ tileMatrix, winnerTiles, winner, turn, onPlayAga
 
   return (
     <div className="board">
-      {winnerTiles && <GameOverModal title="Game Over" subtitle={`${winner} won the game!`} onPlayAgain={onPlayAgain} />}
-      {!winnerTiles && turn >= MAX_TURNS && <GameOverModal title="Game Tie" onPlayAgain={onPlayAgain} />}
+      {isGameOver && <GameOverModal title="Game Over" subtitle={`${current.winner.player} won the game!`} onPlayAgain={onPlayAgain} />}
+      {isGameTie && <GameOverModal title="Game Tie" onPlayAgain={onPlayAgain} />}
       <table>
         <tbody>{tileElements}</tbody>
       </table>
@@ -35,7 +36,7 @@ export default function Board({ tileMatrix, winnerTiles, winner, turn, onPlayAga
   );
 }
 
-function GameOverModal({ title, subtitle, onPlayAgain }) {
+const GameOverModal = ({ title, subtitle, onPlayAgain }) => {
   return (
     <div className="board--gameover">
       <h2><b>{title}</b></h2>

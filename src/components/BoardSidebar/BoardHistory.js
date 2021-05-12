@@ -2,14 +2,14 @@ import { Button } from "react-bootstrap";
 
 import "./BoardHistory.css";
 
-export default function BoardHistory({ tileMatrixHistory, onSetGame }) {
-  const historyElements = tileMatrixHistory.map(({ tileMatrix, turn, winner }, index) => (
+export default function BoardHistory({ history, onSetGame }) {
+  const historyElements = history.map(({ turn, winner }, index) => (
     // Note: While an index should not be used in theory, the index shouldn't change on each history element in this case
     <HistoryItem
       key={index}
       index={index}
       turn={turn}
-      winner={winner}
+      winnerPlayer={winner?.player}
       onSetGame={() => onSetGame(index)}
     />
   ));
@@ -20,10 +20,10 @@ export default function BoardHistory({ tileMatrixHistory, onSetGame }) {
   );
 }
 
-function HistoryItem({ index, turn, winner, onSetGame }) {
+const HistoryItem = ({ index, turn, winnerPlayer, onSetGame }) => {
   return (
     <Button className="board-history__item" variant="dark" onClick={() => onSetGame(index)}>
-      { winner ? `${winner} won in ${turn} turns` : `Lasted ${turn} turns`}
+      { winnerPlayer ? `${winnerPlayer} won in ${turn} turns` : `Lasted ${turn} turns`}
     </Button>
   );
 }

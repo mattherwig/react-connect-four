@@ -1,21 +1,21 @@
 import { Button, ProgressBar } from "react-bootstrap";
-import { MAX_TURNS, PLAYER_RED_TILE, PLAYER_YELLOW_TILE } from "../../utils/ApplicationConstants";
+import { MAX_TURNS } from "../../utils/ApplicationConstants";
 
 import './BoardHeader.css';
 
-export default function BoardHeader({ turn, winner, onReset }) {
+export default function BoardHeader({ turn, player, winner, onReset }) {
   return (
     <div className="board-header">
       <HeaderInfo
-        title={winner ? 'Winner:' : 'Turn:'}
-        highlight={turn % 2 === 0 ? PLAYER_RED_TILE : PLAYER_YELLOW_TILE }
+        title={winner?.player ? 'Winner:' : 'Turn:'}
+        highlight={player}
       />
       <HeaderActionGroup
         onReset={onReset}
       />
       <ProgressBar
           animated
-          variant={winner ? "danger" : "warning"}
+          variant={winner?.player ? "danger" : "warning"}
           min={0}
           max={MAX_TURNS}
           now={winner ? MAX_TURNS : turn}
@@ -24,7 +24,7 @@ export default function BoardHeader({ turn, winner, onReset }) {
   );
 }
 
-function HeaderInfo({ title, highlight }) {
+const HeaderInfo = ({ title, highlight }) => {
   return (
     <>
       <h4 className="board-header__title">{title}</h4>
@@ -33,7 +33,7 @@ function HeaderInfo({ title, highlight }) {
   )
 }
 
-function HeaderActionGroup({ onReset }) {
+const HeaderActionGroup = ({ onReset }) => {
   return (
     <Button
       className="board-header__reset"

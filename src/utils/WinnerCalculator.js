@@ -5,10 +5,10 @@ export default function checkWinner(tileMatrix) {
       || checkHorizontalWinner(tileMatrix)
       || checkDiagnolOneWinner(tileMatrix)
       || checkDiagnolTwoWinner(tileMatrix)
-      || { winner: null, winnerTiles: null };
+      || { player: null, tiles: null };
 }
 
-function checkVerticalWinner(tileMatrix) {
+const checkVerticalWinner = (tileMatrix) => {
   for (let r = 0; r < ROW_SIZE - 3; r++) {
     for (let c = 0; c < COLUMN_SIZE; c++) {
       const head = tileMatrix[r][c];
@@ -18,15 +18,15 @@ function checkVerticalWinner(tileMatrix) {
         if (head && head === curr) count++;
       }
       if (count === 4) return {
-        winner: head,
-        winnerTiles: [[r, c], [r + 1, c], [r + 2, c], [r + 3, c]]
+        player: head,
+        tiles: [[r, c], [r + 1, c], [r + 2, c], [r + 3, c]]
       };
     }
   }
   return null;
 }
 
-function checkHorizontalWinner(tileMatrix) {
+const checkHorizontalWinner = (tileMatrix) => {
   for (let c = 0; c < COLUMN_SIZE - 3; c++) {
     for (let r = 0; r < ROW_SIZE; r++) {
       const head = tileMatrix[r][c];
@@ -37,15 +37,15 @@ function checkHorizontalWinner(tileMatrix) {
       }
       
       if (count === 4) return {
-        winner: head,
-        winnerTiles: [[r, c], [r, c + 1], [r, c + 2], [r, c + 3]]
+        player: head,
+        tiles: [[r, c], [r, c + 1], [r, c + 2], [r, c + 3]]
       };
     }
   }
   return null;
 }
 
-function checkDiagnolOneWinner(tileMatrix) {
+const checkDiagnolOneWinner = (tileMatrix) => {
   for (let r = 0; r < ROW_SIZE - 3; r++) {
     for (let c = 0; c < COLUMN_SIZE - 3; c++) {
       const head = tileMatrix[r][c];
@@ -55,15 +55,15 @@ function checkDiagnolOneWinner(tileMatrix) {
         if (head && head === curr) count++;
       }
       if (count === 4) return {
-        winner: head,
-        winnerTiles: [[r, c], [r + 1, c + 1], [r + 2, c + 2], [r + 3, c + 3]]
+        player: head,
+        tiles: [[r, c], [r + 1, c + 1], [r + 2, c + 2], [r + 3, c + 3]]
       };
     }
   }
   return null;
 }
 
-function checkDiagnolTwoWinner(tileMatrix) {
+const checkDiagnolTwoWinner = (tileMatrix) => {
   for (let r = 0; r < ROW_SIZE - 3; r++) {
     for (let c = 3; c < COLUMN_SIZE; c++) {
       const head = tileMatrix[r][c];
@@ -73,8 +73,8 @@ function checkDiagnolTwoWinner(tileMatrix) {
         if (head && head === curr) count++;
       }
       if (count === 4) return {
-        winner: head,
-        winnerTiles: [[r, c], [r + 1, c - 1], [r + 2, c - 2], [r + 3, c - 3]]
+        player: head,
+        tiles: [[r, c], [r + 1, c - 1], [r + 2, c - 2], [r + 3, c - 3]]
       };
     }
   }
